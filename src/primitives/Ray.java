@@ -4,18 +4,26 @@ package primitives;
  * Class representing a Ray
  */
 public class Ray {
-    final Point _q0;
-    final Vector _dir;
+    private final Point _p0;
+    private final Vector _dir;
 
     /**
      * Constructor initializing the Ray with a point and a direction vector
      * normalize the vector received in parameter
-     * @param q0 : Point
+     * @param p0 : Point
      * @param dir : Vector
      */
-    public Ray(Point q0, Vector dir) {
-        _q0 = q0;
+    public Ray(Point p0, Vector dir) {
+        _p0 = p0;
         _dir = dir.normalize();
+    }
+
+    public Point getP0() {
+        return _p0;
+    }
+
+    public Vector getDir() {
+        return _dir;
     }
 
     public boolean equals(Object obj) {
@@ -23,10 +31,11 @@ public class Ray {
         if (obj == null) return false;
         if (!(obj instanceof Ray)) return false;
         Ray other = (Ray) obj;
-        return this._q0.equals(other._q0) && this._dir.equals(other._dir);
+        return this._p0.equals(other._p0) && this._dir.equals(other._dir);
     }
 
     public String toString() {
-        return "Ray: " + "q0 " + _q0.toString() + "dir " + _dir.toString();
+
+        return "Ray{ " + "q0: " + _p0 + " ,dir: " + _dir +" }";
     }
 }

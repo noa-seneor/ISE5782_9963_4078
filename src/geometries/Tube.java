@@ -4,13 +4,15 @@ import primitives.Point;
 import primitives.Vector;
 import primitives.Ray;
 
+import static primitives.Util.isZero;
+
 /**
  * Class representing a tube implementing geometry interface
  */
 public class Tube implements Geometry {
 
-    Ray _axisRay;
-    double _radius;
+    private Ray _axisRay;
+    private double _radius;
 
     /**
      * Constructor initializing the Tube with a ray (axis)  and a double (radius)
@@ -20,16 +22,6 @@ public class Tube implements Geometry {
     public Tube(Ray axisRay, double radius) {
         _axisRay = axisRay;
         _radius = radius;
-    }
-
-    /**
-     * return normal of the tube given a point
-     * @param point
-     * @return
-     */
-    public Vector getNormal(Point point) {
-
-        return null;
     }
 
     public Ray getAxisRay() {
@@ -42,8 +34,26 @@ public class Tube implements Geometry {
         return _radius;
     }
 
+    /**
+     * return normal of Tube (infinite cylinder normal) given a point
+     * 𝑡 = 𝑣 ∙ (𝑃 − 𝑃0)
+     * 𝑂 = 𝑃0 + 𝑡 ∙ 𝑣
+     * n = normalize(P - O)
+     * @param point : Point
+     * @return Vector
+     */
+    public Vector getNormal(Point point) {
+        double t = _axisRay.getDir().dotProduct(point.subtract(_axisRay.getP0()));
+        Point O;
+        if (t==0)
+            O = _axisRay.getP0();
+        else
+            O = _axisRay.getP0().add(_axisRay.getDir().scale(t));
+        return point.subtract(O).normalize();
+    }
+
     public String toString() {
-        return "Tube: " + "axis ray: " + _axisRay.toString() + ", radius: " + String.valueOf(_radius);
+        return "Tube{ " + "axis ray: " + _axisRay + ", radius: " + _radius + " }";
     }
 }
 

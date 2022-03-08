@@ -5,7 +5,14 @@ import static primitives.Util.*;
 /**
  * Test program for the 1st stage
  *
- * @author Dan Zilberstein
+ * @authors
+ * name1: NOA SENEOR
+ * id: 1679963
+ * email: noaseneor@gmail.com
+ *
+ * name2: MIHAL BENICHOU
+ * id: 23774078
+ * email: mihtoled18@gmail.com
  */
 public final class Main {
 

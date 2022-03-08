@@ -9,7 +9,7 @@ import primitives.Ray;
  */
 public class Cylinder extends Tube {
 
-    double _height;
+    private double _height;
 
     /**
      * Constructor initializing the cylinder with a ray, double , double
@@ -23,22 +23,38 @@ public class Cylinder extends Tube {
         _height = height;
     }
 
-    /**
-     * return normal of the Cylinder given a point
-     * @param point
-     * @return normal
-     */
-    public Vector getNormal(Point point) {
-
-        return null;
-    }
-
     public double getHeight() {
 
         return _height;
     }
 
+    /**
+     * return normal of the Cylinder given a point
+     * @param p : Point
+     * @return normal
+     */
+    public Vector getNormal(Point p) {
+
+        // calculate end base point P1
+        Point P1 = (getAxisRay().getP0()).add(getAxisRay().getDir().scale(_height));
+
+        // if point on the starting base
+        if (p.distance(getAxisRay().getP0()) <= getRadius())
+            return getAxisRay().getDir().scale(-1);
+
+        //if point on the ending base
+        else if (p.distance(P1) <= getRadius())
+            return getAxisRay().getDir();
+
+        // if point on the side
+        else
+            return super.getNormal(p);
+
+    }
+
+    @Override
     public String toString() {
-        return "Cylinder: " + "axis ray: " + _axisRay.toString() + ", radius: " + String.valueOf(_radius) + " ,height: " + String.valueOf(_height);
+        Ray axis = getAxisRay();
+        return "Cylinder{ " + "axis ray: " + axis + ", radius: " + super.getRadius() + " ,height: " + _height +" }";
     }
 }

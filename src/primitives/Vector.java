@@ -44,6 +44,7 @@ public class Vector extends Point{
      * @return result of the addition of the current vector with vector v
      */
     public Vector add(Vector v) {
+
         return new Vector(_xyz.add(v._xyz));
     }
 
@@ -70,6 +71,7 @@ public class Vector extends Point{
      * @return the length as double
      **/
     public double length() {
+
         return Math.sqrt(lengthSquared());
     }
 
@@ -132,11 +134,13 @@ public class Vector extends Point{
      * @return result of the multiplication
      */
     public Vector scale(double scalar) {
+
         return new Vector(_xyz.scale(scalar));
     }
 
     @Override
     public String toString() {
-        return "Vector" + _xyz.toString();
+
+        return "Vector{ " + _xyz.toString() + " }";
     }
 }

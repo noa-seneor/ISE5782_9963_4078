@@ -8,8 +8,8 @@ import primitives.Vector;
  */
 public class Sphere implements Geometry{
 
-    final Point _center;
-    final double _radius;
+    private final Point _center;
+    private final double _radius;
 
     /**
      * Cnstructor initializing the sphere with a center Point and a radius
@@ -28,7 +28,7 @@ public class Sphere implements Geometry{
      */
     public Vector getNormal(Point point) {
 
-        return null;
+        return (point.subtract(_center)).normalize();
     }
 
     public Point getCenter() {
@@ -42,6 +42,6 @@ public class Sphere implements Geometry{
     }
 
     public String toString() {
-        return "Sphere: " + "center: " + _center.toString() + ", radius: " + String.valueOf(_radius);
+        return "Sphere{ " + "center: " + _center + ", radius: " + _radius + " }";
     }
 }

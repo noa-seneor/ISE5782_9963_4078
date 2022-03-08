@@ -19,6 +19,6 @@ public class Triangle extends Polygon{
     }
 
     public String toString() {
-        return "Triangle: " + "p1: " + vertices.get(0).toString() + ", p2: " + vertices.get(1).toString() + ", p3: " + vertices.get(3).toString();
+        return "Triangle{ " + "p1: " + vertices.get(0) + ", p2: " + vertices.get(1) + ", p3: " + vertices.get(3) + " }";
     }
 }
