@@ -1,7 +1,12 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
+
+import static primitives.Util.alignZero;
 
 /**
  * Class representing a Sphere implementing Geometry
@@ -41,7 +46,52 @@ public class Sphere implements Geometry{
         return _radius;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Sphere)) return false;
+        Sphere other = (Sphere) obj;
+        return this._center.equals(other._center) && this._radius == (other._radius);
+    }
+
     public String toString() {
         return "Sphere{ " + "center: " + _center + ", radius: " + _radius + " }";
+    }
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        Point p0 = ray.getP0() ;
+        Point O = _center;
+        Vector V = ray.getDir();
+
+        if (O.equals(p0))
+            return List.of(_center.add(V.scale(_radius)));
+
+        Vector U = O.subtract(p0);
+        double tm = V.dotProduct(U);
+        double d = Math.sqrt(U.lengthSquared() - tm*tm);
+        if (d >= _radius)
+                return null;
+        double th = Math.sqrt(_radius*_radius - d*d);
+        double t1 = alignZero(tm - th);
+        double t2 = alignZero(tm + th);
+        if (t1 > 0 && t2 > 0)
+        {
+            Point p1 = ray.getPoint(t1);
+            Point p2 = ray.getPoint(t2);
+            return (List.of(p1,p2));
+        }
+
+        if ( t1 > 0 ){
+            Point p1 = ray.getPoint(t1);
+            return List.of(p1);
+        }
+
+        if ( t2 > 0 ){
+            Point p2 = ray.getPoint(t2);
+            return List.of(p2);
+        }
+        return null;
     }
 }

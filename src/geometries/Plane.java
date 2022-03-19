@@ -1,7 +1,10 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+import static primitives.Util.*;
+import java.util.List;
 
 /**
  * Class representing a Plane implementing Geometry
@@ -65,5 +68,34 @@ public class Plane implements Geometry{
     public String toString() {
 
         return "Plane{ " + "q0: " + _q0 + ", normal: " + _normal + " }";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Sphere)) return false;
+        Plane other = (Plane) obj;
+        return this._q0.equals(other._q0) && this._normal == (other._normal);
+    }
+
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        Point p0 = ray.getP0();
+        Vector V = ray.getDir();
+        Vector N = getNormal();
+        if (_q0.equals(p0))
+            return null;
+        double nQMinusP0 = N.dotProduct(_q0.subtract(p0));
+        double NV = N.dotProduct(V);
+        if (isZero(NV))
+            return null;
+        double t = alignZero(nQMinusP0/NV);
+        if ( t > 0){
+            Point P = ray.getPoint(t);
+            return List.of(P);
+        }
+        return null;
     }
 }

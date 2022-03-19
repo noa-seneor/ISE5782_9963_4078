@@ -4,6 +4,8 @@ import primitives.Point;
 import primitives.Vector;
 import primitives.Ray;
 
+import java.util.List;
+
 import static primitives.Util.isZero;
 
 /**
@@ -34,6 +36,16 @@ public class Tube implements Geometry {
         return _radius;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Sphere)) return false;
+        Tube other = (Tube) obj;
+        return this._axisRay.equals(other._axisRay) && this._radius == (other._radius);
+    }
+
+
     /**
      * return normal of Tube (infinite cylinder normal) given a point
      * 𝑡 = 𝑣 ∙ (𝑃 − 𝑃0)
@@ -54,6 +66,11 @@ public class Tube implements Geometry {
 
     public String toString() {
         return "Tube{ " + "axis ray: " + _axisRay + ", radius: " + _radius + " }";
+    }
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        return null;
     }
 }
 
