@@ -36,6 +36,11 @@ public class Tube implements Geometry {
         return _radius;
     }
 
+    /**
+     * equal method for Tube
+     * @param obj
+     * @return bool
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

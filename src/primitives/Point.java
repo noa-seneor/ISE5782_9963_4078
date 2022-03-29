@@ -1,7 +1,7 @@
 package primitives;
 
 /**
- * This class represent a point and it's operations functions
+ * Class representing a point and it's operations functions
  */
 public class Point {
     final Double3 _xyz;

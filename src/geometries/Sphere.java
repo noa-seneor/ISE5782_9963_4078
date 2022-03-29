@@ -46,6 +46,11 @@ public class Sphere implements Geometry{
         return _radius;
     }
 
+    /**
+     * equal method for Sphere
+     * @param obj
+     * @return bool
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -59,6 +64,12 @@ public class Sphere implements Geometry{
         return "Sphere{ " + "center: " + _center + ", radius: " + _radius + " }";
     }
 
+
+    /**
+     * method to find intersection between ray and sphere
+     * @param ray
+     * @return list of intersection points
+     */
     @Override
     public List<Point> findIntersections(Ray ray) {
         Point p0 = ray.getP0() ;

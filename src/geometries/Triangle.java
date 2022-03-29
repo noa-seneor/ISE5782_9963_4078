@@ -25,12 +25,23 @@ public class Triangle extends Polygon{
     }
 
     public String toString() {
-        return "Triangle{ " + "p1: " + vertices.get(0) + ", p2: " + vertices.get(1) + ", p3: " + vertices.get(3) + " }";
+        return "Triangle{ " + "p1: " + vertices.get(0) + ", p2: " + vertices.get(1) + ", p3: " + vertices.get(2) + " }";
     }
 
+    /**
+     * method to find intersection between ray and triangle
+     * @param ray
+     * @return list of intersection points
+     */
     @Override
     public List<Point> findIntersections(Ray ray) {
-        Point p = plane.findIntersections(ray).get(0);
+        List<Point> lst = plane.findIntersections(ray);
+        Point p = null;
+        if (lst != null)
+            p = lst.get(0);
+        else
+            return null;
+
         Point p0 = ray.getP0();
         Vector V = ray.getDir();
 

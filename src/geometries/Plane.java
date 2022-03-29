@@ -70,6 +70,11 @@ public class Plane implements Geometry{
         return "Plane{ " + "q0: " + _q0 + ", normal: " + _normal + " }";
     }
 
+    /**
+     * equal method for Plane
+     * @param obj
+     * @return bool
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -80,6 +85,12 @@ public class Plane implements Geometry{
     }
 
 
+
+    /**
+     * method to find intersection between ray and plane
+     * @param ray
+     * @return list of intersection points
+     */
     @Override
     public List<Point> findIntersections(Ray ray) {
         Point p0 = ray.getP0();
