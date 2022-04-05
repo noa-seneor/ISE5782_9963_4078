@@ -14,6 +14,7 @@ public class Scene {
     public AmbientLight _ambientLight;
     public Geometries _geometries;
 
+
     /**
      * constructor that receives only name , and initialize the rest by default
      * @param name : String

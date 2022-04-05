@@ -162,6 +162,9 @@ public class Camera {
         return this;
     }
 
+    /**
+     * renderImage method, construct ray through every pixel, and write it with its color
+     */
     public void renderImage() {
             if (_imageWriter == null)
                 throw new MissingResourceException("missing", ImageWriter.class.getName(), "in renderImage");
@@ -183,6 +186,11 @@ public class Camera {
         }
     }
 
+    /**
+     * print grid method
+     * @param interval : int
+     * @param color : Color
+     */
     public void printGrid(int interval, Color color) {
         if (_imageWriter == null)
             throw new MissingResourceException("missing", ImageWriter.class.getName(), "in printGrid");
@@ -195,6 +203,9 @@ public class Camera {
         }
     }
 
+    /**
+     * call writeToImage method of imagewriter
+     */
     public void writeToImage() {
             if (_imageWriter == null)
                 throw new MissingResourceException("missing", ImageWriter.class.getName(), "in writeToImage");

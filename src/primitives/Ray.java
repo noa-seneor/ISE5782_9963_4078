@@ -9,6 +9,7 @@ public class Ray {
     private final Point _p0;
     private final Vector _dir;
 
+
     /**
      * Constructor initializing the Ray with a point and a direction vector
      * normalize the vector received in parameter

@@ -10,7 +10,6 @@ public class AmbientLight {
 
     Color _intensity;
 
-
     /**
      * default constructor , intensity default color set to black
      */
