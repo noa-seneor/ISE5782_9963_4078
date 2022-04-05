@@ -1,8 +1,11 @@
 package renderer;
 
+import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
+
+import java.util.MissingResourceException;
 
 import static primitives.Util.isZero;
 
@@ -10,10 +13,15 @@ import static primitives.Util.isZero;
  * Camera Class
  */
 public class Camera {
+
     private Point _p0;
     private Vector _vTo, _vUp, _vRight;
+
     private double _height, _width;
     private double _distance;
+
+    private ImageWriter _imageWriter;
+    private RayTracerBase _rayTracer;
 
     /**
      * camera constructor
@@ -51,6 +59,17 @@ public class Camera {
      */
     public Camera setVPDistance(double distance){
         _distance = distance;
+        return this;
+    }
+
+    public Camera setRayTracer(RayTracerBase rayTracer) {
+        _rayTracer = rayTracer;
+        return this;
+    }
+
+    public Camera setImageWriter(ImageWriter imageWriter)
+    {
+        _imageWriter = imageWriter;
         return this;
     }
 
@@ -142,4 +161,43 @@ public class Camera {
             _p0 = _p0.add(_vTo.scale(addTo));
         return this;
     }
+
+    public void renderImage() {
+            if (_imageWriter == null)
+                throw new MissingResourceException("missing", ImageWriter.class.getName(), "in renderImage");
+            if (_rayTracer == null)
+                throw new MissingResourceException("missing", RayTracerBase.class.getName(), "in renderImage");
+
+            try{
+                int nX = _imageWriter.getNx();
+                int nY = _imageWriter.getNy();
+                for (int i = 0; i < nY; i++) {
+                    for (int j = 0; j < nX; j++) {
+                        Ray ray = constructRay(nX, nY, j, i);
+                        Color color = _rayTracer.traceRay(ray);
+                        _imageWriter.writePixel(j, i, color);
+                    }
+            }
+        } catch (MissingResourceException e) {
+            throw new UnsupportedOperationException("unsupported" + e.getClassName());
+        }
+    }
+
+    public void printGrid(int interval, Color color) {
+        if (_imageWriter == null)
+            throw new MissingResourceException("missing", ImageWriter.class.getName(), "in printGrid");
+
+        for (int i = 0; i < _imageWriter.getNy(); i++) {
+            for (int j = 0; j < _imageWriter.getNx(); j++) {
+                if (i % interval == 0 || j % interval == 0)
+                    _imageWriter.writePixel(i, j, color);
+            }
+        }
+    }
+
+    public void writeToImage() {
+            if (_imageWriter == null)
+                throw new MissingResourceException("missing", ImageWriter.class.getName(), "in writeToImage");
+            _imageWriter.writeToImage();
+        }
 }

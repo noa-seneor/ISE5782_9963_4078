@@ -1,5 +1,7 @@
 package primitives;
 
+import java.util.List;
+
 /**
  * Class representing a Ray
  */
@@ -38,6 +40,24 @@ public class Ray {
         return this._p0.equals(other._p0) && this._dir.equals(other._dir);
     }
 
+    /**
+     * calculates closest point to ray
+     * @param lst : List<Point>
+     * @return closest point to ray of the list
+     */
+    public Point findClosestPoint(List<Point> lst){
+        double closestDist = Double.MAX_VALUE;
+        Point result = null;
+
+        for (Point p: lst)
+        {
+            if (_p0.distance(p) < closestDist) {
+                closestDist = _p0.distance(p);
+                result = p;
+            }
+        }
+        return result;
+    }
     public String toString() {
 
         return "Ray{ " + "q0: " + _p0 + " ,dir: " + _dir +" }";

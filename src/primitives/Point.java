@@ -3,7 +3,9 @@ package primitives;
 /**
  * Class representing a point and it's operations functions
  */
+
 public class Point {
+    public static final Point ZERO =new Point(0,0,0) ;
     final Double3 _xyz;
 
     /**
