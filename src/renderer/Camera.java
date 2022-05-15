@@ -15,7 +15,10 @@ import static primitives.Util.isZero;
 public class Camera {
 
     private Point _p0;
-    private Vector _vTo, _vUp, _vRight;
+
+    private Vector _vTo;
+    private Vector _vUp;
+    private Vector _vRight;
 
     private double _height, _width;
     private double _distance;
@@ -26,9 +29,9 @@ public class Camera {
     /**
      * camera constructor
      * normalize vTo and Vup and calculates vRight normalized
-     * @param p0
-     * @param vTo
-     * @param vUp
+     * @param p0 : Point
+     * @param vTo : toward Vector
+     * @param vUp : up Vector
      */
     public Camera(Point p0, Vector vTo, Vector vUp)
     {
@@ -42,8 +45,8 @@ public class Camera {
 
     /**
      * set view Plane width and height
-     * @param width
-     * @param height
+     * @param width : double
+     * @param height : double
      * @return this camera
      */
     public Camera setVPSize(double width, double height){
@@ -54,7 +57,7 @@ public class Camera {
 
     /**
      * set camera distance to viewPlane
-     * @param distance
+     * @param distance : double
      * @return this camera
      */
     public Camera setVPDistance(double distance){
@@ -125,6 +128,7 @@ public class Camera {
     public Ray constructRay(int nX, int nY, int j, int i){
 
         Point Pc = _p0.add(_vTo.scale(_distance));
+
         double Rx = _width/nX;
         double Ry = _height/nY;
 
@@ -174,8 +178,8 @@ public class Camera {
             try{
                 int nX = _imageWriter.getNx();
                 int nY = _imageWriter.getNy();
-                for (int i = 0; i < nY; i++) {
-                    for (int j = 0; j < nX; j++) {
+                for (int i = 0; i < nX; i++) {
+                    for (int j = 0; j < nY; j++) {
                         Ray ray = constructRay(nX, nY, j, i);
                         Color color = _rayTracer.traceRay(ray);
                         _imageWriter.writePixel(j, i, color);
@@ -195,14 +199,21 @@ public class Camera {
         if (_imageWriter == null)
             throw new MissingResourceException("missing", ImageWriter.class.getName(), "in printGrid");
 
-        for (int i = 0; i < _imageWriter.getNy(); i++) {
-            for (int j = 0; j < _imageWriter.getNx(); j++) {
+        int nX = _imageWriter.getNx();
+        int nY= _imageWriter.getNy();
+        for (int i = 0; i < nX; i++) {
+            for (int j = 0; j < nY; j++) {
                 if (i % interval == 0 || j % interval == 0)
                     _imageWriter.writePixel(i, j, color);
             }
         }
     }
 
+    private Color castRay(int nX, int nY, int i, int j)
+    {
+        Ray ray = constructRay(nX,nY,j,i);
+        return _rayTracer.traceRay(ray);
+    }
     /**
      * call writeToImage method of imagewriter
      */

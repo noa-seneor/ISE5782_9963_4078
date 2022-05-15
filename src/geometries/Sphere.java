@@ -11,7 +11,7 @@ import static primitives.Util.alignZero;
 /**
  * Class representing a Sphere implementing Geometry
  */
-public class Sphere implements Geometry{
+public class Sphere extends Geometry{
 
     private final Point _center;
     private final double _radius;
@@ -71,13 +71,13 @@ public class Sphere implements Geometry{
      * @return list of intersection points
      */
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         Point p0 = ray.getP0() ;
         Point O = _center;
         Vector V = ray.getDir();
 
         if (O.equals(p0))
-            return List.of(_center.add(V.scale(_radius)));
+            return List.of(new GeoPoint(this,_center.add(V.scale(_radius))));
 
         Vector U = O.subtract(p0);
         double tm = V.dotProduct(U);
@@ -91,17 +91,17 @@ public class Sphere implements Geometry{
         {
             Point p1 = ray.getPoint(t1);
             Point p2 = ray.getPoint(t2);
-            return (List.of(p1,p2));
+            return (List.of(new GeoPoint(this,p1),new GeoPoint(this,p2)));
         }
 
         if ( t1 > 0 ){
             Point p1 = ray.getPoint(t1);
-            return List.of(p1);
+            return List.of(new GeoPoint(this, p1));
         }
 
         if ( t2 > 0 ){
             Point p2 = ray.getPoint(t2);
-            return List.of(p2);
+            return List.of(new GeoPoint(this,p2));
         }
         return null;
     }

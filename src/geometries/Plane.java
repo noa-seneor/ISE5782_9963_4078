@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Class representing a Plane implementing Geometry
  */
-public class Plane implements Geometry{
+public class Plane extends Geometry{
 
     final Point _q0;
     final Vector _normal;
@@ -92,7 +92,7 @@ public class Plane implements Geometry{
      * @return list of intersection points
      */
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         Point p0 = ray.getP0();
         Vector V = ray.getDir();
         Vector N = getNormal();
@@ -104,8 +104,8 @@ public class Plane implements Geometry{
             return null;
         double t = alignZero(nQMinusP0/NV);
         if ( t > 0){
-            Point P = ray.getPoint(t);
-            return List.of(P);
+            Point P = p0.add(V.scale(t));
+            return List.of(new GeoPoint(this, P));
         }
         return null;
     }
