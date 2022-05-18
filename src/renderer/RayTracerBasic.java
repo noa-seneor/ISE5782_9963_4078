@@ -40,6 +40,33 @@ public class RayTracerBasic extends RayTracerBase{
     }
 
     /**
+     * Method to check if the shapes are unshaded
+     * @param gp : Geopoint
+     * @param l : Vector
+     * @param n : Vector
+     * @return
+     */
+    private boolean unshaded(GeoPoint gp,LightSource light, Vector l, Vector n) {
+        Vector lightDirection = l.scale(-1);
+        Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : - DELTA);
+        Point point = gp._point.add(delta);
+        Ray lightRay = new Ray(point, lightDirection);
+        double maxDistance = light.getDistance(gp._point);
+        List<GeoPoint> intersections = _scene._geometries.findGeoIntersections(lightRay);
+        if( intersections == null || intersections.isEmpty())
+        {
+            return true;
+        }
+        for (GeoPoint intersection : intersections)
+        {
+            if (intersection._point.distance(gp._point) < maxDistance)
+                return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Method to calculate the local effects (light) in intersection point
      * by adding diffusion & specular calculation
      * @param gp : GeoPoint
@@ -58,10 +85,12 @@ public class RayTracerBasic extends RayTracerBase{
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0)
             {
+                if (unshaded(gp,lightSource,l,n)) {
                     Color iL = lightSource.getIntensity(gp._point);
                     color = color.add(
                             iL.scale(calcDiffusive(material, nl)),
                             iL.scale(calcSpecular(material, n, l, nl, v)));
+                }
 
             }
         }
