@@ -28,9 +28,19 @@ public class Color {
 	public static final Color ORANGE = new Color(255, 200, 0);
 	public static final Color PINK = new Color(255, 175, 175);
 	public static final Color DARKGREY = new Color(64, 64, 64);
-	public static final Color GREY = new Color(128, 128, 128);
-	public static final Color LIGHTGREY = new Color(192, 192, 192);
+	public static final Color GREY = new Color(218, 128, 128);
+	//public static final Color LIGHTGREY = new Color(192, 192, 192);
 	public static final Color WHITE = new Color(255, 255, 255);
+	public static final Color VERYDARKBLUE = new Color(0 , 0 ,50);
+	public static final Color LIGHTYELLOW = new Color(255 , 255 ,153);
+	public static final Color DARKGREEN = new Color(0 , 102 ,0);
+	public static final Color VERYDARKGREEN = new Color(0 , 40 ,0);
+	public static final Color LIGHTRED = new Color(255, 51, 51);
+	public static final Color BROWN = new Color(20, 13, 6);
+	public static final Color LIGHTGREY = new Color(218, 227, 224);
+	public static final Color CANARD = new Color(0 , 71 ,59);
+
+
 
 	/**
 	 * Default constructor - to generate Black Color (privately)

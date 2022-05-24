@@ -1,10 +1,15 @@
 package lighting;
-
+import geometries.Plane;
 import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
+ *
  * Class representing Point Light
  */
 public class PointLight extends Light implements LightSource{
@@ -13,6 +18,9 @@ public class PointLight extends Light implements LightSource{
     private double _kC =1;
     private  double _kL = 0;
     private double _kQ = 0;
+
+
+
 
     protected PointLight(Color intensity, Point position) {
         super(intensity);
@@ -57,8 +65,11 @@ public class PointLight extends Light implements LightSource{
         return this;
     }
 
+
     @Override
     public double getDistance(Point point) {
         return point.distance(_position);
     }
+
+
 }

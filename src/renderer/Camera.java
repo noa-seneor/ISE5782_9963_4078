@@ -1,12 +1,18 @@
 package renderer;
 
+import geometries.Intersectable;
 import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.MissingResourceException;
+import java.util.concurrent.ThreadLocalRandom;
 
+import static java.lang.StrictMath.random;
+import static primitives.Color.BLACK;
 import static primitives.Util.isZero;
 
 /**
@@ -25,6 +31,8 @@ public class Camera {
 
     private ImageWriter _imageWriter;
     private RayTracerBase _rayTracer;
+
+    int AntiAliasing = 0;
 
     /**
      * camera constructor
@@ -76,6 +84,13 @@ public class Camera {
         return this;
     }
 
+    public Camera setAntiAliasing(int antiAliasing) {
+        if (antiAliasing <0)
+            throw new IllegalArgumentException("Antialiasing rays can't be less than 0");
+        AntiAliasing = antiAliasing;
+        return this;
+    }
+
     /**
      * @return vUp
      */
@@ -119,13 +134,14 @@ public class Camera {
     }
 
     /**
+     * Construct Random rays through one pixel
      * @param nX : number of columns
      * @param nY : number of rows
-     * @param j  : pixel column
-     * @param i  : pixel row
-     * @return ray constructed through the pixel
+     * @param j  : current column
+     * @param i  : current row
+     * @return
      */
-    public Ray constructRay(int nX, int nY, int j, int i){
+    public List<Ray> constructRays(int nX, int nY, int j, int i){
 
         Point Pc = _p0.add(_vTo.scale(_distance));
 
@@ -144,9 +160,55 @@ public class Camera {
         Vector Vij = Pij.subtract(_p0);
 
         Ray r = new Ray(_p0, Vij.normalize());
-        return r;
+
+
+        LinkedList<Ray> rays = new LinkedList<>();
+        rays.add(r);
+
+        double randX, randY;
+
+        Point point;
+        for (int p=0; p<AntiAliasing; ++p)
+        {
+            randX = ThreadLocalRandom.current().nextDouble(-Rx/2, Rx/2);
+            randY = ThreadLocalRandom.current().nextDouble(-Ry/2, Ry/2);
+
+            point = new Point(Pij.getX() + randX, Pij.getY() + randY , Pij.getZ());
+            rays.add(new Ray(_p0,point.subtract(_p0)));
+
+        }
+        return rays;
     }
 
+    /**
+     * Construct center ray through pixel
+     * @param nX
+     * @param nY
+     * @param j
+     * @param i
+     * @return
+     */
+    public Ray constructRay(int nX, int nY, int j, int i) {
+
+        Point Pc = _p0.add(_vTo.scale(_distance));
+
+        double Rx = _width / nX;
+        double Ry = _height / nY;
+
+        double Yi = (i - (nY - 1) / 2d) * Ry;
+        double Xj = (j - (nX - 1) / 2d) * Rx;
+
+        Point Pij = Pc;
+        if (!isZero(Xj))
+            Pij = Pij.add(_vRight.scale(Xj));
+        if (!isZero(Yi))
+            Pij = Pij.add(_vUp.scale(-Yi));
+
+        Vector Vij = Pij.subtract(_p0);
+
+        Ray r = new Ray(_p0, Vij.normalize());
+        return r;
+    }
     /**
      * bonus
      * deplace camera ( by adding doubles to camera vectors)
@@ -180,15 +242,18 @@ public class Camera {
                 int nY = _imageWriter.getNy();
                 for (int i = 0; i < nX; i++) {
                     for (int j = 0; j < nY; j++) {
-                        Ray ray = constructRay(nX, nY, j, i);
-                        Color color = _rayTracer.traceRay(ray);
-                        _imageWriter.writePixel(j, i, color);
+                        Color color = BLACK;
+                        List<Ray> rays = constructRays(nX, nY, j, i);
+                        for (Ray r: rays)
+                            color = color.add(_rayTracer.traceRay(r));
+                        _imageWriter.writePixel(j, i, color.reduce(rays.size()));
                     }
             }
         } catch (MissingResourceException e) {
             throw new UnsupportedOperationException("unsupported" + e.getClassName());
         }
     }
+
 
     /**
      * print grid method
@@ -211,8 +276,8 @@ public class Camera {
 
     private Color castRay(int nX, int nY, int i, int j)
     {
-        Ray ray = constructRay(nX,nY,j,i);
-        return _rayTracer.traceRay(ray);
+        Ray r = constructRay(nX,nY,j,i);
+        return _rayTracer.traceRay(r);
     }
     /**
      * call writeToImage method of imagewriter

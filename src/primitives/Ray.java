@@ -10,6 +10,7 @@ import java.util.List;
 public class Ray {
     private final Point _p0;
     private final Vector _dir;
+    private static final double DELTA = 0.1;
 
 
     /**
@@ -18,9 +19,26 @@ public class Ray {
      * @param p0 : Point
      * @param dir : Vector
      */
+
     public Ray(Point p0, Vector dir) {
         _p0 = p0;
         _dir = dir.normalize();
+    }
+
+    public Ray(Point p0, Vector dir, Vector normal) {
+
+        _dir = dir.normalize();
+        if (dir.dotProduct(normal) == 0) {
+            _p0 = p0;
+        }
+        else
+        {
+            int s = 1;
+            if (dir.dotProduct(normal) <0)
+                s = -1;
+            _p0 = p0.add(normal.scale(s*DELTA));
+
+        }
     }
 
     public Point getP0() {

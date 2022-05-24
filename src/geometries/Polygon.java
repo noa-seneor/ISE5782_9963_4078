@@ -1,5 +1,6 @@
 package geometries;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import primitives.*;
@@ -89,8 +90,53 @@ public class Polygon extends Geometry {
 		return plane.getNormal();
 	}
 
+    /**
+     * Function that finds the intersection within a given ray
+     * @param ray
+     * @return
+     */
+    @Override
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
+
+        List<GeoPoint> intersections = plane.findGeoIntersections(ray);
+        if (intersections == null)
+            return null;
+
+        Point p0 = ray.getP0();
+        Vector v = ray.getDir();
+		double oldSign = 0;
+		double sign = 0;
+
+        Vector v1 = vertices.get(1).subtract(p0);
+        Vector v2 = vertices.get(0).subtract(p0);
+
+        try {
+			oldSign = v.dotProduct(v1.crossProduct(v2));
+        } catch (IllegalArgumentException e) {
+            System.out.println(this.vertices);
+        }
+        if (isZero(oldSign))
+            return null;
+
+
+        for (int i = vertices.size() - 1; i > 0; --i) {
+            v1 = v2;
+            v2 = vertices.get(i).subtract(p0);
+            sign = alignZero(v.dotProduct(v1.crossProduct(v2)));
+            if ( (oldSign*sign)<= 0)
+				return null;
+        }
+
+
+        List<GeoPoint> result = new LinkedList<>();
+        for (GeoPoint geo : intersections) {
+            result.add(new GeoPoint(this, geo._point));
+        }
+        return result;
+    }
+
 	@Override
 	protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-		return null;
+		return findGeoIntersections(ray);
 	}
 }

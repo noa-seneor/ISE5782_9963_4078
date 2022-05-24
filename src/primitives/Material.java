@@ -6,6 +6,8 @@ package primitives;
 public class Material {
     public Double3 _kD = Double3.ZERO;
     public Double3 _kS =Double3.ZERO;
+    public Double3 _kR = Double3.ZERO;
+    public Double3 _kT =Double3.ZERO;
     public int _nShininess = 0;
 
     /**
@@ -49,6 +51,28 @@ public class Material {
     public Material setKs(double kS)
     {
         _kS = new Double3(kS);
+        return this;
+    }
+
+    /**
+     * set diffusive factor
+     * @param kT
+     * @return
+     */
+    public Material setKt(double kT)
+    {
+        _kT = new Double3(kT);
+        return this;
+    }
+
+    /**
+     * set specular Factor
+     * @param kR
+     * @return
+     */
+    public Material setKr(double kR)
+    {
+        _kR = new Double3(kR);
         return this;
     }
 

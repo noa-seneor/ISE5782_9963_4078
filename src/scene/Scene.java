@@ -20,7 +20,6 @@ public class Scene {
     public Geometries _geometries;
     public List<LightSource> _lights = new LinkedList<>();
 
-
     /**
      * set lights of the scene
      * @param lst
