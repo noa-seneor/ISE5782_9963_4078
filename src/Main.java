@@ -1,7 +1,12 @@
 import primitives.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.lang.System.out;
 import static primitives.Util.*;
-
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 /**
  * Test program for the 1st stage
  *

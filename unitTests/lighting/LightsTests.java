@@ -55,6 +55,31 @@ public class LightsTests {
                 .setRayTracer(new RayTracerBasic(scene1)) //
                 .renderImage(); //
         camera1.writeToImage(); //
+
+
+
+        ImageWriter imageWriter2 = new ImageWriter("lightSphereDirectionalSuperSampling", 500, 500);
+        camera1.setImageWriter(imageWriter2) //
+                .setMultithreading(3)
+                .setsuperSampling(4)
+                .setRayTracer(new RayTracerBasic(scene1)) //
+                .renderImageMT(); //
+        camera1.writeToImage();
+
+
+
+
+
+
+        ImageWriter imageWriter3 = new ImageWriter("lightSphereDirectionalAntiAliasing", 500, 500);
+        camera1.setImageWriter(imageWriter3) //
+                .setMultithreading(3)
+                .setAntiAliasing(256)
+                .setRayTracer(new RayTracerBasic(scene1)) //
+                .renderImageMT(); //
+        camera1.writeToImage();
+
+
     }
 
     /**

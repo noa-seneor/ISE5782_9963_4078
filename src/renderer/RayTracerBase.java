@@ -1,6 +1,7 @@
 package renderer;
 
 import primitives.Color;
+import primitives.Point;
 import primitives.Ray;
 import scene.Scene;
 
@@ -25,4 +26,7 @@ public abstract class RayTracerBase {
      * @return Color
      */
     public abstract Color traceRay(Ray ray);
-}
+
+    public abstract Color traceRaySS(Point p0, Point p1, Point p2, Point p3, Point cameraP0, int level);
+
+    }

@@ -33,10 +33,10 @@ public class Ray {
         }
         else
         {
-            int s = 1;
+            int sign = 1;
             if (dir.dotProduct(normal) <0)
-                s = -1;
-            _p0 = p0.add(normal.scale(s*DELTA));
+                sign = -1;
+            _p0 = p0.add(normal.scale(sign*DELTA));
 
         }
     }

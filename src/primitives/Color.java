@@ -63,6 +63,17 @@ public class Color {
 		rgb = new Double3(r, g, b);
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (!(obj instanceof Color)) return false;
+		Color other = (Color) obj;
+		return this.rgb.equals(other.rgb);
+	}
+
+
+
 
 	/**
 	 * Constructor to generate a color according to RGB components Each component in
@@ -115,6 +126,35 @@ public class Color {
 		}
 		return new Color(rr, rg, rb);
 	}
+
+    /**
+     * Check if the two colors are almost similar
+     * @param c : Color
+     * @return
+     */
+    public Boolean checkDelta(Color c) {
+        double rr = rgb.d1;
+        double rg = rgb.d2;
+        double rb = rgb.d3;
+        rr = rr- c.rgb.d1;
+        rg = rg - c.rgb.d2;
+        rb = rb - c.rgb.d3;
+
+        return (rr*rr <=4 && rg*rg <=4 && rb*rb <=4 );
+    }
+
+    /**
+     * Check if the two colors are almost similar
+     * @param obj : Color
+     * @return
+     */
+    public boolean equalsDelta(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Color)) return false;
+        Color other = (Color) obj;
+        return this.checkDelta(other);
+    }
 
 	/**
 	 * Scale the color by a scalar triad per rgb

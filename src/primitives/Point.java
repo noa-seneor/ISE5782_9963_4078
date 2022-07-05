@@ -70,6 +70,26 @@ public class Point {
 
     }
 
+    public Point calculatePointBetween(Point p)
+    {
+      return addPoint(p).divide(2);
+    }
+
+    public Point divide(int div)
+    {
+        return new Point(
+                 _xyz.d1/div,
+               _xyz.d2/div,
+                _xyz.d3/div);
+    }
+    public Point addPoint(Point p) {
+        return new Point(
+                p._xyz.d1 + _xyz.d1,
+                p._xyz.d2 + _xyz.d2,
+                p._xyz.d3 + _xyz.d3 );
+
+    }
+
     /**
      * method to calculate the distance squared of the two points
      * @param p : Point
